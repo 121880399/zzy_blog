@@ -1,6 +1,6 @@
 # Zzy博客
 <h1 align="center">
-  <img src="https://i11.hoopchina.com.cn/hupuapp/bbs/240314728440209/thread_240314728440209_20200118002739_s_205497_o_w_2389_h_1080_92510.jpg" height="240" width="440"  alt="logo" />
+  <img src="https://i11.hoopchina.com.cn/hupuapp/bbs/240314728440209/thread_240314728440209_20200118002739_s_205497_o_w_2389_h_1080_92510.jpg" height="270" width="597"  alt="logo" />
  </h1>
  
  ![](https://img.shields.io/badge/language-java-orange.svg)
