@@ -1,4 +1,4 @@
-# Leetcode训练营
+# Zzy博客
 <h1 align="center">
   <img src="https://pic1.zhimg.com/80/v2-31d6b54cc0dfd389835140c886a94c81_720w.jpg" height="240" width="240"  alt="logo" />
  </h1>
