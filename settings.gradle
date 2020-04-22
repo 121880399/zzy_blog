@@ -1,0 +1,2 @@
+rootProject.name='zzy_blog'
+include ':app'
