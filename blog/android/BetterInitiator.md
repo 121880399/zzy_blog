@@ -125,8 +125,7 @@ taskDispatcher.init(this)
 ```
 
 这样就会根据每个Task的依赖关系进行执行啦。在这里我给一张Demo中Task的关系图给大家。
-![](https://images.xiaozhuanlan.com/photo/2020/d371a9dcc9b5ac7d89cf8c888d21eb6e.png)
-
+ ![](https://images.xiaozhuanlan.com/photo/2020/d371a9dcc9b5ac7d89cf8c888d21eb6e.png)
 
 ATask是在主线程中执行，它不依赖于任何Task。BTask也是在主线程中执行，它必须在ATask之后执行。CTask和DTask是在工作线程中执行，他们必须在BTask执行完毕以后再执行。ETask是在工作线程中执行，它必须等CTask和DTask同时执行完毕后再执行，并且如果ETask没有执行完毕不会进入到MainActivity界面。FTask在IO线程中执行，它不依赖于任何Task。
 	
