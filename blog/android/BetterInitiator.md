@@ -1,6 +1,4 @@
-android启动优化---BetterInitiator
-
-  APP的启动速度对用户的体验，和留存有很大的影响，所以android的启动优化还是比较重要的，也是各厂android程序猿的绩效指标。
+APP的启动速度对用户的体验，和留存有很大的影响，所以android的启动优化还是比较重要的，也是各厂android程序猿的绩效指标。
 
 #### 1.对于启动优化，常规操作有以下几点：
 
@@ -27,11 +25,11 @@ android启动优化---BetterInitiator
 
 #### 3.使用BetterInitiator
 
-	github地址：https://github.com/121880399/betterInitiator
+github地址：https://github.com/121880399/betterInitiator
 	
-	第一步：在你项目的根目录下的build.gradle文件中添加如下
+第一步：在你项目的根目录下的build.gradle文件中添加如下
 
-```css
+```
 allprojects {
 		repositories {
 			...
@@ -40,7 +38,7 @@ allprojects {
 	}
 ```
 
-	第二步：添加依赖
+第二步：添加依赖
 
 ```css
 dependencies {
@@ -48,9 +46,9 @@ dependencies {
 	}
 ```
 
-	第三步：创建Task
+第三步：创建Task
 	
-	继承Task类，实现run方法，在run方法中执行你要初始化的内容。
+继承Task类，实现run方法，在run方法中执行你要初始化的内容。
 
 ```java
 /**
@@ -112,7 +110,7 @@ public class ETask extends Task {
 
 这是demo中其中一个Task，这个Task的执行依赖于前面BTask的返回值，所以这里用EventBus将参数传入，当然还有其他的办法。在dependsOn这个方法中，定义了依赖关系，ETask必须在CTask和DTask执行完毕以后才能执行。runOnMainThread指定当前任务是否在主线程中执行，threadPoolType指定当前是在IO型线程池中执行，这里可以选择是用IO线程池还是CPU线程池。needWait如果返回true，那么在完成这个Task之前，是不会往下执行的，所以这里有可能造成ANR噢，使用的时候需要注意。当然你可以通过setWaitOutTime方法来指定超时时长。
 
-	第四步：将Task添加进调度器
+第四步：将Task添加进调度器
 
 ```java
 TaskDispatcher taskDispatcher = new TaskDispatcher();
@@ -126,20 +124,19 @@ taskDispatcher.init(this)
                 .start();
 ```
 
-	这样就会根据每个Task的依赖关系进行执行啦。在这里我给一张Demo中Task的关系图给大家。
+这样就会根据每个Task的依赖关系进行执行啦。在这里我给一张Demo中Task的关系图给大家。
+![](https://images.xiaozhuanlan.com/photo/2020/d371a9dcc9b5ac7d89cf8c888d21eb6e.png)
 
-![微信图片_20190806105658.png](https://upload-images.jianshu.io/upload_images/1870458-79edd3bc337118f9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
-
-	ATask是在主线程中执行，它不依赖于任何Task。BTask也是在主线程中执行，它必须在ATask之后执行。CTask和DTask是在工作线程中执行，他们必须在BTask执行完毕以后再执行。ETask是在工作线程中执行，它必须等CTask和DTask同时执行完毕后再执行，并且如果ETask没有执行完毕不会进入到MainActivity界面。FTask在IO线程中执行，它不依赖于任何Task。
+ATask是在主线程中执行，它不依赖于任何Task。BTask也是在主线程中执行，它必须在ATask之后执行。CTask和DTask是在工作线程中执行，他们必须在BTask执行完毕以后再执行。ETask是在工作线程中执行，它必须等CTask和DTask同时执行完毕后再执行，并且如果ETask没有执行完毕不会进入到MainActivity界面。FTask在IO线程中执行，它不依赖于任何Task。
 	
-	在这里的依赖关系只是为了模拟复杂的情况，在正常情况下不会出现子线程中的任务要等待主线程的情况，如果是这种情况，也没必要使用子线程了。
+在这里的依赖关系只是为了模拟复杂的情况，在正常情况下不会出现子线程中的任务要等待主线程的情况，如果是这种情况，也没必要使用子线程了。
 
-#### 4.原理
+### 4.原理
 
-	介绍完使用以后，我们来说说原理。首先所有的Task加入到调度器以后，会区分哪些是有依赖的Task，依赖关系是怎么样的，然后会通过图的拓扑排序来重新定义存在依赖的Task的先后执行顺序，接着会区分哪些Task是在主线程中执行，哪些Task是在工作线程中执行，并交给相应的线程进行执行。
+介绍完使用以后，我们来说说原理。首先所有的Task加入到调度器以后，会区分哪些是有依赖的Task，依赖关系是怎么样的，然后会通过图的拓扑排序来重新定义存在依赖的Task的先后执行顺序，接着会区分哪些Task是在主线程中执行，哪些Task是在工作线程中执行，并交给相应的线程进行执行。
 	
-	这里讲一下拓扑排序的原理，首先拓扑排序会将所有的节点放进一张邻接表里面，这个邻接表有点类似于我们的Hashmap，只是在每个顶点表节点中加入了一个字段用于记录当前的入度。
+这里讲一下拓扑排序的原理，首先拓扑排序会将所有的节点放进一张邻接表里面，这个邻接表有点类似于我们的Hashmap，只是在每个顶点表节点中加入了一个字段用于记录当前的入度。
 
 ```java
  public Vector<Integer> topologicalSort(){
@@ -189,4 +186,4 @@ taskDispatcher.init(this)
 
 上面的注释写的很详细了，首先会遍历得到所有节点入度。然后找出入度为0的节点，放入一个队列中。每次执行完入度为0的节点后，该节点的相邻节点的入度减1，如果减1后入度为0，则放入到队列中，然后只要队列不为空，就从队列中不断的获取入度为0的节点进行执行。如果获取节点的次数，跟节点的总次数不相等，那么说明出现了环。
 
-	至于如何实现Task之间的等待，我们用到了CountDownLatch这个类，这个类具体的用法大家可以自行百度一下，这里就不做详细的介绍了。
+至于如何实现Task之间的等待，我们用到了CountDownLatch这个类，这个类具体的用法大家可以自行百度一下，这里就不做详细的介绍了。

@@ -637,4 +637,3 @@ private static class SerialExecutor implements Executor {
 
 好啦，以上就是AsyncTask的全部解析，如果发现更多的坑我会继续更新。
 
-本文为原创文章，转载请注明出处：http://www.jianshu.com/p/e60c3bb03d61
